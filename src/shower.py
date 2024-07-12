@@ -56,7 +56,7 @@ class Shower:
     """ Representation of a shower
 
     """
-    def __init__(self, dict_dir, target_material, min_energy, maxF_fudge_global=1,max_n_integrators=int(1e4), fast_MCS_mode=True, seed=None,rescale_MCS=1 ):
+    def __init__(self, dict_dir, target_material, min_energy, target_length=1000, maxF_fudge_global=1,max_n_integrators=int(1e4), fast_MCS_mode=True, seed=None,rescale_MCS=1 ):
         """Initializes the shower object.
         Args:
             dict_dir: directory containing the pre-computed VEGAS integrators and auxillary info.
@@ -71,6 +71,7 @@ class Shower:
 
         self.set_dict_dir(dict_dir)
         self.set_target_material(target_material)
+        self.set_target_length(target_length)
         self.min_energy = min_energy
 
         self.set_material_properties()
@@ -80,7 +81,7 @@ class Shower:
         self.set_samples()
         self.set_MCS_momentum(fast_MCS_mode)
         self.set_MCS_rescale_factor(rescale_MCS)
-        
+
         self._maxF_fudge_global=maxF_fudge_global
         self._max_n_integrators=max_n_integrators
 
@@ -126,9 +127,15 @@ class Shower:
     def set_target_material(self, value):
         """Set the string representing the target material to value"""
         self._target_material = value
+    def set_target_length(self, value):
+        """Set the length of the target material to value"""
+        self._target_length = value
     def get_target_material(self):
         """Get the string representing the target material"""
         return self._target_material
+    def get_target_length(self):
+        """Get the length of the target material"""
+        return self._target_length
     def set_material_properties(self):
         """Defines material properties (Z, A, rho, etc) based on the target 
         material label
@@ -421,6 +428,11 @@ class Shower:
                 Part0.set_ended(True)
                 return Part0
             
+            target_length = self.get_target_length()
+            if Part0.get_rf()[2] > target_length:
+                Part0.set_ended(True)
+                return Part0
+            
             if Losses == False:
                 mfp = self.get_mfp(Part0)
                 distC = np.random.uniform(0.0, 1.0)
@@ -540,7 +552,9 @@ class Shower:
                         if (all([apC.get_ended() == True for apC in all_particles])\
                             is True and ap.get_pf()[0] < self.min_energy):
                             break
-
+                        if (all([apC.get_ended() == True for apC in all_particles])\
+                            is True and ap.get_rf()[2] > self.get_target_length()):
+                            break
                         # Generate secondaries for the hard interaction
                         # Note: secondaries include the scattered parent particle 
                         # (i.e. the original the parent is not modified)

@@ -18,7 +18,7 @@ def main(doSM=True, doDark=True):
                     'save_location':path + '/data',
                     'run_find_maxes':True}
     # Necessary parameters for processing the integrators to determine cross sections
-    processing_params = {'process_targets':['graphite','lead','iron','aluminum'], 'save_location':path + '/data'}
+    processing_params = {'process_targets':['graphite','lead','iron','aluminum','beryllium'], 'save_location':path + '/data'}
     #args = training_params.update(processing_params)
     # List of processes to do
     processes_to_do = ['Comp', 'Ann', 'Moller', 'Bhabha', 'Brem', 'PairProd']
@@ -77,7 +77,7 @@ def main(doSM=True, doDark=True):
                     #generate_integrators.stitch_integrators(training_params['save_location'] + process + '/mV_' + str(int(np.floor(mV*1000000.))) + "keV/")
                     #generate_integrators.cleanup(training_params['save_location'] + process + '/mV_' + str(int(np.floor(mV*1000000.))) + "keV/")
 
-        processing_params = {'process_targets':['graphite','lead','iron','aluminum'], 'save_location':save_location, 'mV_list':mV_list}
+        processing_params = {'process_targets':['graphite','lead','iron','aluminum','beryllium'], 'save_location':save_location, 'mV_list':mV_list}
         generate_integrators.call_find_maxes(processing_params, processes_to_do)
 
 if __name__ == "__main__":

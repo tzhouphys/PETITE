@@ -32,8 +32,8 @@ class interpolate1d(interp1d):
 import sys
 from numpy.random import random as draw_U
         
-Z = {'hydrogen':1.0, 'graphite':6.0, 'lead':82.0, 'iron':26.0} #atomic number of different targets
-A = {'hydrogen':1.0, 'graphite':12.0, 'lead':207.2, 'iron':56.0} #atomic mass of different targets
+Z = {'hydrogen':1.0, 'graphite':6.0, 'lead':82.0, 'iron':26.0, 'beryllium':4.0, 'molybdenum':42.0, 'tungsten':74.0} #atomic number of different targets
+A = {'hydrogen':1.0, 'graphite':12.0, 'lead':207.2, 'iron':56.0, 'beryllium':9.0, 'molybdenum':95.9, 'tungsten':183.8} #atomic mass of different targets
 
 GeVsqcm2 = 1.0/(5.06e13)**2 #Conversion between cross sections in GeV^{-2} to cm^2
 cmtom = 0.01
@@ -52,12 +52,12 @@ class DarkShower(Shower):
     """ A class to reprocess an existing EM shower to generate dark photons
     """
 
-    def __init__(self, dict_dir, target_material, min_energy, mV_in_GeV ,
+    def __init__(self, dict_dir, target_material, min_energy, target_length, mV_in_GeV ,
                  mode="exact", maxF_fudge_global=1,
                  max_n_integrators=int(1e4), kinetic_mixing=1.0,
                  g_e=None, active_processes=None, fast_MCS_mode=True ,
                  rescale_MCS=1):
-        super().__init__(dict_dir, target_material, min_energy)
+        super().__init__(dict_dir, target_material, min_energy, target_length)
         """Initializes the dark shower object.
         Args:
             dict_dir: directory containing the pre-computed MC samples of various shower processes
@@ -76,6 +76,7 @@ class DarkShower(Shower):
 
         self.set_dark_dict_dir(dict_dir)
         self.set_target_material(target_material)
+        self.set_target_length(target_length)
         self.min_energy = min_energy
         self.kinetic_mixing = kinetic_mixing
         self.g_e = g_e

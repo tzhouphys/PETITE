@@ -38,6 +38,9 @@ target_information = {"graphite": {"Z_T":6,  "A_T":12, "mT":11.178, "rho":2.210}
                       "lead"    : {"Z_T":82, "A_T":207, "mT":207.2, "rho":11.35},
                       "iron"    : {"Z_T":26, "A_T":56,  "mT":55.845, "rho":8.00},
                       "hydrogen": {"Z_T":1,  "A_T":1,   "mT":1.0, "rho":1.0},
-                      "aluminum": {"Z_T":13, "A_T":27,  "mT":26.9815385, "rho":2.699}}
+                      "aluminum": {"Z_T":13, "A_T":27,  "mT":26.9815385, "rho":2.699},
+                      "beryllium": {"Z_T":4, "A_T":9, "mT":8.39, "rho":1.845},
+                      "molybdenum": {"Z_T":42, "A_T":96, "mT":95.94, "rho":10.22},
+                      "tungsten": {"Z_T":74, "A_T":184, "mT":183.84, "rho":19.3}}
 for tm in target_information:
     target_information[tm]['dEdx'] = 2.0*target_information[tm]['rho'] # MeV/cm
